@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+<!-- REGISTRATION FORM -->
+    <h1>Register</h1>
+    <form action="/register" method="POST">
+        {% csrf_token %}
+        {% for message in messages %}
+        <p class="text-muted small">{{ message }}</p>
+        {% endfor %}
+        <!-- <label for="name">Name</label>
+        <input type="text" class="form-control" name="name"> -->
+
+        <label for="email">Email</label>
+        <input type="text" class="form-control" name="email">
+
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" class="form-control" name="confirm_password">
+        <br>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
+<!-- LOGIN FORM -->
+<hr>
+    <h1>Login</h1>
+    <form action="/login" method="POST">
+        {% csrf_token %}
+        <label for="login_email">Email</label>
+        <input type="text" class="form-control" name="login_email" >
+
+        <label for="login_password">Password</label>
+        <input type="text" class="form-control" name="login_password" >
+        <br>
+        <button type="submit" class="btn btn-success">Login</button>
+    </form>
+</body>
+</html>

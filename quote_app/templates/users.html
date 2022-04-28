@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <a href="/quotes" role="button" class="btn btn-basic">Dashboard</a> | <a href="/logout" role="button" class="btn btn-basic">logout</a>
+    <hr>
+    <!-- NAVBAR END -->
+    <!-- MAIN CONTENT -->
+    <h3>Posts by {{user.email}}</h3>
+    <h3>Count: {{all_quotes.count}}</h3>
+    {% for quote in all_quotes %}
+        <p>{{quote.quoted_by}}: {{quote.message}}</p>
+        {% if user.id == request.session.user_id %}
+            <form action="/quotes/{{quote.id}}/edit" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/quotes/{{quote.id}}/delete" role="button" class="btn btn-danger">Remove</a>
+            </form>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
+
+
+
+<!-- {% for quote in all_quotes %}
+{% if this_user in quote.favorited_by.all %}
+<div>
+    <h5><a href="/quotes/{{quote.id}}">{{quote.quoted_by}}</a></h5>
+    <p>(Posted by {{quote.posted_by.email}})</p>
+</div>
+{% endif %}
+{% endfor %}
+
+
+
+
+
+
+{% for quote in all_quotes %}
+{% if this_user not in quote.favorited_by.all %}
+<div>
+    <h5><a href="/quotes/{{quote.id}}">{{quote.quoted_by}}</a></h5>
+    <p>(Posted by {{quote.posted_by.email}})</p>
+</div>
+{% endif %}
+{% endfor %} -->
+
+
+
+
+<!-- we have to run a for loop to display all posts from the user -->

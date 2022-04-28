@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <h1>Welcome, {{request.session.greeting}}</h1> 
+    <a href="/logout" role="button" class="btn -btn-warning">logout</a>
+    <hr>
+    <!-- NAVBAR END -->
+    <!-- MAIN CONTENT -->
+    <div>
+        <!-- LIST OF OTHER QUOTES -->
+        <h3>Quotable Quotes</h3>
+        {% for quote in all_quotes %}
+        {% if this_user not in quote.favorited_by.all %}
+        <div>
+            <h5>{{quote.quoted_by}}: {{quote.message}}</h5>
+            <p>Posted by <a href="/quotes/{{quote.posted_by.id}}">{{quote.posted_by.email}}</a></p>
+            <form action="/favorite/{{quote.id}}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary">Add to Favorites</button>
+            </form>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <!-- LIST OF OTHER QUOTES END -->
+        <!-- LIST OF FAVORITED QUOTES -->
+        <br>
+        <h3>Your Favorited Quotes</h3>
+        {% for quote in all_quotes %}
+        {% if this_user in quote.favorited_by.all %}
+        <div>
+            <h5>{{quote.quoted_by}}: {{quote.message}}</h5>
+            <p>Posted by <a href="/quotes/{{quote.posted_by.id}}">{{quote.posted_by.email}}</a></p>
+
+
+            <form action="/unfavorite/{{quote.id}}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-primary">Remove from Favorite</button>
+            </form>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <!-- LIST OF FAVORITED QUOTES END -->
+        <!-- ADDING A NEW QUOTE -->
+        <h3>Contribute a Quote</h3>
+        <form action="/quotes/create" method="POST">
+            {% csrf_token %}
+            {% for message in messages %}
+            <p class="text-muted small">{{ message }}</p>
+            {% endfor %}
+            <div class="form-group">
+                <label for="quoted_by">Quoted By</label>
+                <input type="text" class="form-control" name="quoted_by" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <input type="text" class="form-control" name="message" required>
+            </div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </form>
+        <!-- ADDING A NEW QUOTE END -->
+    </div>
+    <!-- MAIN CONTENT END -->
+</body>
+</html>
+
